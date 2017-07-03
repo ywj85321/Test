@@ -12,41 +12,125 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- 解决控制台输出乱码问题 -->
+    <argLine>-Dfile.encoding=UTF-8</argLine>
+	<xmlFileName>testng.xml</xmlFileName>
+	
   </properties>
+       <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.20</version>
+      </plugin>
+    </plugins>
+  </reporting>
   
  <build>
  	<plugins>
- 		<plugin>  
-  			 <groupId>org.apache.maven.plugins</groupId>  
- 			 <artifactId>maven-surefire-plugin</artifactId>  
- 			 <version>2.17</version>  
- 			 
-	 			 <configuration>
-	 				 <span style="color:#009900;"><suiteXmlFiles>  
-               			 <suiteXmlFile>testng-customsuite.xml</suiteXmlFile>  
-            		 </suiteXmlFiles></span>
-		 			 <excludes>
-		 			 	<exclude>com.beust/TestBrowsers.java</exclude>
-		 			 	<exclude>com.testcase/LoginCase.java</exclude>
-		 			 </excludes>
-	 			 </configuration>
-		</plugin>
+ 		<plugin>
+       		<groupId>org.apache.maven.plugins</groupId>
+      		<artifactId>maven-surefire-plugin</artifactId>
+      		<version>2.5</version>
+      	        <configuration>
+      	    		<suiteXmlFiles>
+           				 <suiteXmlFile>testng-DraftNumCase.xml</suiteXmlFile>
+         			</suiteXmlFiles>
+<!--       	    		<includes>
+      	    			<include>
+      	    				com.testcase/DraftNumCase.java
+      	    			</include>
+      	    			<include>
+      	    				com.beust/TestBrowsers.java
+      	    			</include>
+      	    		</includes> -->
+       			</configuration>
+     </plugin>
+     
+     <!-- 添加插件,添加ReportNg的监听器，修改最后的TestNg的报告 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <properties>
+                        <property>
+                            <name>usedefaultlisteners</name>
+                            <value>false</value>
+                        </property>
+                        <property>
+                            <name>listener</name>
+                            <value>org.uncommons.reportng.HTMLReporter</value>
+                        </property>
+                    </properties>
+                    <workingDirectory>target/</workingDirectory>
+                    <!-- <forkMode>always</forkMode> -->
+                </configuration>
+            </plugin>
  	</plugins>
  </build>
 
   <dependencies>
+  
+  <dependency>
+  	<groupId>org.selenium.server</groupId>
+  	<artifactId>standalone</artifactId>
+  	<version>3.4.0</version>
+  	<scope>system</scope>
+  	<systemPath>${project.basedir}/libs/selenium-server-standalone-3.4.0.jar</systemPath>
+  </dependency>
+  
+  <dependency>
+            <groupId>org.uncommons</groupId>
+            <artifactId>reportng</artifactId>
+            <version>1.1.4</version>
+            <scope>test</scope>
+            <exclusions>	
+                <exclusion>
+                    <groupId>org.testng</groupId>
+                    <artifactId>testng</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
    
    <dependency>
     <groupId>org.seleniumhq.selenium</groupId>
     <artifactId>selenium-java</artifactId>
     <version>3.4.0</version>
    </dependency>
-  
+    <!--
+            scope标签中对应值的解释：
+                * compile，缺省值，适用于所有阶段，会随着项目一起发布。
+                * provided，类似 compile，期望 JDK、容器或使用者会提供这个依赖。如 servlet.jar。
+                * runtime，只在运行时使用，如 JDBC 驱动，适用运行和测试阶段。
+                * test，只在测试时使用，用于编译和运行测试代码。不会随项目发布。
+                * system，类似 provided，需要显式提供包含依赖的 jar， Maven 不会在 Repository 中查找它。
+             -->
+   
    <dependency>
 	<groupId>org.testng</groupId>
 	<artifactId>testng</artifactId>
     <version>6.11</version>
-    <scope>test</scope>
+    <scope>compile</scope>
+          <exclusions>
+      	    <exclusion>
+      		  <groupId>org.yaml</groupId>
+      		  <artifactId>snakeyaml</artifactId>
+      	    </exclusion>
+      	  <exclusion>
+      		  <groupId>com.beust</groupId>
+      		  <artifactId>jcommander</artifactId>
+      	</exclusion>
+      </exclusions>
 	</dependency>
+	
+	<!-- 依赖Guice -->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>3.0</version>
+            <scope>test</scope>
+        </dependency>
   </dependencies>
 </project>

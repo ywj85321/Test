@@ -5,7 +5,7 @@
     <classes>
       <class name="com.testcase.LoginCase">
         <methods>
-          <include name="start"/>
+          <include name="loginTest" invocation-numbers="0"/>
           <include name="quit"/>
           <include name="beforeClass"/>
         </methods>

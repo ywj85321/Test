@@ -8,6 +8,7 @@ import inid.page.LoginPage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -40,7 +41,6 @@ public class DraftNumCase {
 		drPage.draftsClick();
 		int draftNum = drPage.getText();
 		int buttonNumPage = drPage.totalPageNum();
-		System.out.println(buttonNumPage);
 		while (buttonNumPage>=1) {
 			numPage = numPage+drPage.listNum();
 			try {
@@ -51,8 +51,7 @@ public class DraftNumCase {
 			}
 			buttonNumPage--;
 		}
-		System.out.println("=================="+draftNum);
-		System.out.println("++++++++++++++++++"+numPage);
+		Assert.assertEquals(true, draftNum==numPage);
 	}
 	
 	@AfterClass
