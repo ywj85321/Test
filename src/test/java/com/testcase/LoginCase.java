@@ -32,7 +32,7 @@ public class LoginCase {
 	@Test
 	public void loginTest(@Optional() String username){
 		driver.get("http://mail.163.com/");
-//		driver.switchTo().frame("iframe#x-URS-iframe");
+		driver.switchTo().frame("iframe#x-URS-iframe");
 		wait.waitFor(5000);
 		driver.switchTo().frame("x-URS-iframe");
 		loPage.login(username, "85321ywj.#");
